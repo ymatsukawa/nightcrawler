@@ -63,3 +63,49 @@ func TestUsingOr(t *testing.T) {
 		assert.Equal(t, tt.Expect, result)
 	}
 }
+
+func TestUsingNot(t *testing.T) {
+	type Test struct {
+		Input  string
+		Expect bool
+	}
+
+	tests := []Test{
+		{
+			Input:  `time=1970-01-01T11:12:00.000+09:00 level=info msg="select * from examples where a = 1 and not b = 2;"`,
+			Expect: true,
+		},
+		{
+			Input:  `time=1970-01-01T11:12:00.000+09:00 level=info msg="select * from examples where a = 1;"`,
+			Expect: false,
+		},
+	}
+
+	for _, tt := range tests {
+		result := UsingNot(tt.Input)
+		assert.Equal(t, tt.Expect, result)
+	}
+}
+
+func TestUsingIsNull(t *testing.T) {
+	type Test struct {
+		Input  string
+		Expect bool
+	}
+
+	tests := []Test{
+		{
+			Input:  `time=1970-01-01T11:12:00.000+09:00 level=info msg="select * from examples where a is null;"`,
+			Expect: true,
+		},
+		{
+			Input:  `time=1970-01-01T11:12:00.000+09:00 level=info msg="select * from examples where a is not null;"`,
+			Expect: false,
+		},
+	}
+
+	for _, tt := range tests {
+		result := UsingIsNull(tt.Input)
+		assert.Equal(t, tt.Expect, result)
+	}
+}

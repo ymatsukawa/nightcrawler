@@ -38,7 +38,7 @@ func subqueryHandler(db *gorm.DB) echo.HandlerFunc {
 	}
 }
 
-func heavyClauseHandler(db *gorm.DB) echo.HandlerFunc {
+func heavyCalcHandler(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var rows []map[string]interface{}
 		if err := db.Table("users").

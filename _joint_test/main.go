@@ -40,7 +40,7 @@ func main() {
 	e.GET("/select-many", selectManyHandler(db))
 	e.GET("/index-noworth", indexNoWorthHandler(db))
 	e.GET("/subquery", subqueryHandler(db))
-	e.GET("/heavy-clause", heavyClauseHandler(db))
+	e.GET("/heavy-calc", heavyCalcHandler(db))
 	e.GET("/using-function", usingFunctionHandler(db))
 	e.GET("/nplusone", nPlusOneHandler(db))
 	e.GET("/no-slow-query", noSloQueryHandler(db))
@@ -50,7 +50,7 @@ func main() {
 				"/select-many",
 				"/index-noworth",
 				"/subquery",
-				"/heavy-clause",
+				"/heavy-calc",
 				"/using-function",
 				"/nplusone",
 				"/no-slow-query",

@@ -14,6 +14,7 @@ go get -u github.com/ymatsukawa/slow_query
 
 ```go
 import (
+  "os"
   "log/slog"
 
   "github.com/ymatsukawa/slow_query"

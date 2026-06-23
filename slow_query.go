@@ -1,0 +1,53 @@
+package slow_query
+
+import (
+	"context"
+	"log/slog"
+
+	"github.com/ymatsukawa/slow_query/detector"
+)
+
+type slowQueryDetectHandler struct {
+	SourceHandler slog.Handler
+	LogInfo       detector.ParseInfo
+}
+
+func NewSlogHandler(sourceHandler slog.Handler, suppress []string) *slowQueryDetectHandler {
+	return &slowQueryDetectHandler{
+		SourceHandler: sourceHandler,
+		LogInfo: detector.ParseInfo{
+			PreviousLine: "",
+			Suppress:     suppress,
+		},
+	}
+}
+
+func (h *slowQueryDetectHandler) Enabled(ctx context.Context, level slog.Level) bool {
+	return h.SourceHandler.Enabled(ctx, level)
+}
+
+func (h *slowQueryDetectHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
+	return &slowQueryDetectHandler{
+		SourceHandler: h.SourceHandler.WithAttrs(attrs),
+		LogInfo:       h.LogInfo,
+	}
+}
+
+func (h *slowQueryDetectHandler) WithGroup(name string) slog.Handler {
+	return &slowQueryDetectHandler{
+		SourceHandler: h.SourceHandler.WithGroup(name),
+		LogInfo:       h.LogInfo,
+	}
+}
+
+func (h *slowQueryDetectHandler) Handle(ctx context.Context, record slog.Record) error {
+	prev := record.Message
+	if category, ok := detector.CatchSlowQuery(record.Message, h.LogInfo); ok {
+		record.AddAttrs(slog.String("slow_query", category))
+	}
+
+	err := h.SourceHandler.Handle(ctx, record)
+	h.LogInfo.PreviousLine = prev
+
+	return err
+}

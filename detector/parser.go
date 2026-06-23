@@ -24,13 +24,20 @@ var detectors = []rule{
 
 	{mc.HeadingWildcardLike, category.IndexNoWorth},
 	{mc.UsingOr, category.IndexNoWorth},
+	{mc.UsingNot, category.IndexNoWorth},
+	{mc.UsingIsNull, category.IndexNoWorth},
 
 	{mc.ContainsSubquery, category.UsingSubquery},
 
-	{mc.ManyIn, category.HeavyClause},
-	{mc.ManyJoin, category.HeavyClause},
+	{mc.ManyIn, category.HeavyCalc},
+	{mc.ManyJoin, category.HeavyCalc},
 
 	{mc.SelectCount, category.UsingFunction},
+	{mc.SelectAvg, category.UsingFunction},
+	{mc.SelectMax, category.UsingFunction},
+	{mc.SelectMin, category.UsingFunction},
+	{mc.SelectSum, category.UsingFunction},
+
 	{mc.WhereDate, category.UsingFunction},
 }
 

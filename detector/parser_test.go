@@ -1,6 +1,7 @@
 package detector
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -31,7 +32,7 @@ func TestCatchSlowQuery(t *testing.T) {
 			ExpectOk:       true,
 		},
 		{
-			Name:           "Select many (select *)",
+			Name:           "Select many (no limit)",
 			Input:          `select "users"."id", "users"."name" from users`,
 			ExpectCategory: category.SelectMany,
 			ExpectOk:       true,
@@ -43,20 +44,44 @@ func TestCatchSlowQuery(t *testing.T) {
 			ExpectOk:       true,
 		},
 		{
+			Name:           "Index no worth (using or)",
+			Input:          `update users set name = 'x' where a = 1 or b = 2`,
+			ExpectCategory: category.IndexNoWorth,
+			ExpectOk:       true,
+		},
+		{
+			Name:           "Index no worth (using not)",
+			Input:          `update users set name = 'x' where a = 1 and not b = 2`,
+			ExpectCategory: category.IndexNoWorth,
+			ExpectOk:       true,
+		},
+		{
+			Name:           "Index no worth (is null)",
+			Input:          `update users set name = 'x' where deleted_at is null`,
+			ExpectCategory: category.IndexNoWorth,
+			ExpectOk:       true,
+		},
+		{
 			Name:           "Using subquery",
 			Input:          `select id from users where id in (select user_id from orders) limit 10`,
 			ExpectCategory: category.UsingSubquery,
 			ExpectOk:       true,
 		},
 		{
-			Name:           "Heavy clause (many join)",
-			Input:          `select id from a join b on a.id = b.a_id join c on b.id = c.b_id limit 1`,
-			ExpectCategory: category.HeavyClause,
+			Name:           "Heavy calc (many join)",
+			Input:          `select id from a join b on a.id = b.a_id join c on b.id = c.b_id limit 5`,
+			ExpectCategory: category.HeavyCalc,
+			ExpectOk:       true,
+		},
+		{
+			Name:           "Heavy calc (many in)",
+			Input:          `select id from users where id in (` + strings.Repeat("1,", 99) + `1) limit 5`,
+			ExpectCategory: category.HeavyCalc,
 			ExpectOk:       true,
 		},
 		{
 			Name:           "Using function (count)",
-			Input:          `select count(*) from users limit 1`,
+			Input:          `select count(*) from users limit 5`,
 			ExpectCategory: category.UsingFunction,
 			ExpectOk:       true,
 		},
@@ -65,6 +90,36 @@ func TestCatchSlowQuery(t *testing.T) {
 			Input:          `select id from users limit 10`,
 			ExpectCategory: "",
 			ExpectOk:       false,
+		},
+		{
+			Name:           "Using function (avg)",
+			Input:          `select avg(age) from users limit 5`,
+			ExpectCategory: category.UsingFunction,
+			ExpectOk:       true,
+		},
+		{
+			Name:           "Using function (max)",
+			Input:          `select max(age) from users limit 5`,
+			ExpectCategory: category.UsingFunction,
+			ExpectOk:       true,
+		},
+		{
+			Name:           "Using function (min)",
+			Input:          `select min(age) from users limit 5`,
+			ExpectCategory: category.UsingFunction,
+			ExpectOk:       true,
+		},
+		{
+			Name:           "Using function (sum)",
+			Input:          `select sum(age) from users limit 5`,
+			ExpectCategory: category.UsingFunction,
+			ExpectOk:       true,
+		},
+		{
+			Name:           "Using function (where date)",
+			Input:          `select id from users where date(created_at) = '2023-01-01' limit 5`,
+			ExpectCategory: category.UsingFunction,
+			ExpectOk:       true,
 		},
 	}
 

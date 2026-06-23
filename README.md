@@ -29,7 +29,6 @@ baseHandler := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.L
 
 logger := slog.New(slow_query.NewSlogHandler(baseHandler, nil))
 // or
-//
 // suppress := []string{c.SelectMany}
 // logger := slog.New(slow_query.NewSlogHandler(baseHandler, suppress))
 ```

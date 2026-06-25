@@ -1,10 +1,10 @@
-package slow_query
+package nightcrawler
 
 import (
 	"context"
 	"log/slog"
 
-	"github.com/ymatsukawa/slow_query/detector"
+	"github.com/ymatsukawa/nightcrawler/detector"
 )
 
 type slowQueryDetectHandler struct {

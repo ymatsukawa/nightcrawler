@@ -1,7 +1,7 @@
 package detector
 
 import (
-	mc "github.com/ymatsukawa/slow_query/detector/match_case"
+	mc "github.com/ymatsukawa/nightcrawler/detector/match_case"
 )
 
 type Class interface {

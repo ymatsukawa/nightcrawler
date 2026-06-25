@@ -1,4 +1,4 @@
-# Slow query detect handler
+# Nightcrawler - Slow query detect handler
 
 ## Description
 
@@ -7,7 +7,7 @@ Detect slow query from slog.
 ## Installation
 
 ```
-go get -u github.com/ymatsukawa/slow_query
+go get -u github.com/ymatsukawa/nightcrawler
 ```
 
 ## Usage
@@ -17,8 +17,8 @@ import (
   "os"
   "log/slog"
 
-  "github.com/ymatsukawa/slow_query"
-  d "github.com/ymatsukawa/slow_query/detector"
+  "github.com/ymatsukawa/nightcrawler"
+  d "github.com/ymatsukawa/nightcrawler/detector"
 )
 
 ...
@@ -27,10 +27,10 @@ baseHandler := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.L
 // or
 // baseHandler := slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo})
 
-logger := slog.New(slow_query.NewSlogHandler(baseHandler, nil))
+logger := slog.New(nightcrawler.NewSlogHandler(baseHandler, nil))
 // or
 // suppress := []int{d.SelectMany}
-// logger := slog.New(slow_query.NewSlogHandler(baseHandler, suppress))
+// logger := slog.New(nightcrawler.NewSlogHandler(baseHandler, suppress))
 ```
 
 ## Show case

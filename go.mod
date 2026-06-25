@@ -1,4 +1,4 @@
-module github.com/ymatsukawa/slow_query
+module github.com/ymatsukawa/nightcrawler
 
 go 1.24.0
 

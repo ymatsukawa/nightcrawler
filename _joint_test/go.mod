@@ -4,7 +4,7 @@ go 1.24.0
 
 require (
 	github.com/labstack/echo/v4 v4.13.3
-	github.com/ymatsukawa/slow_query v0.0.0
+	github.com/ymatsukawa/nightcrawler v0.0.0
 	gorm.io/driver/postgres v1.5.11
 	gorm.io/gorm v1.25.12
 )
@@ -29,4 +29,4 @@ require (
 	golang.org/x/time v0.12.0 // indirect
 )
 
-replace github.com/ymatsukawa/slow_query => ../
+replace github.com/ymatsukawa/nightcrawler => ../

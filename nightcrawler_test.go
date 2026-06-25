@@ -1,4 +1,4 @@
-package slow_query
+package nightcrawler
 
 import (
 	"log/slog"
@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	d "github.com/ymatsukawa/slow_query/detector"
+	d "github.com/ymatsukawa/nightcrawler/detector"
 )
 
 func TestNewSlogHandler(t *testing.T) {

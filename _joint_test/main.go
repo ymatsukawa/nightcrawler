@@ -6,8 +6,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/ymatsukawa/slow_query"
-	// d "github.com/ymatsukawa/slow_query/detector"
+	"github.com/ymatsukawa/nightcrawler"
+	// d "github.com/ymatsukawa/nightcrawler/detector"
 )
 
 func main() {
@@ -15,10 +15,10 @@ func main() {
 	// or
 	// baseHandler := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo})
 
-	logger := slog.New(slow_query.NewSlogHandler(baseHandler, nil))
+	logger := slog.New(nightcrawler.NewSlogHandler(baseHandler, nil))
 	// or
 	// suppress := []int{d.SelectMany}
-	// logger := slog.New(slow_query.NewSlogHandler(baseHandler, suppress))
+	// logger := slog.New(nightcrawler.NewSlogHandler(baseHandler, suppress))
 	gormLogger := newSlogGormLogger(logger)
 
 	db, err := connectDB(gormLogger)

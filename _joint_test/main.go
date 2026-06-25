@@ -7,7 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/ymatsukawa/slow_query"
-	// c "github.com/ymatsukawa/slow_query/category"
+	// d "github.com/ymatsukawa/slow_query/detector"
 )
 
 func main() {
@@ -17,7 +17,7 @@ func main() {
 
 	logger := slog.New(slow_query.NewSlogHandler(baseHandler, nil))
 	// or
-	// suppress := []string{c.SelectMany}
+	// suppress := []int{d.SelectMany}
 	// logger := slog.New(slow_query.NewSlogHandler(baseHandler, suppress))
 	gormLogger := newSlogGormLogger(logger)
 

@@ -18,7 +18,7 @@ import (
   "log/slog"
 
   "github.com/ymatsukawa/slow_query"
-  c "github.com/ymatsukawa/slow_query/category"
+  d "github.com/ymatsukawa/slow_query/detector"
 )
 
 ...
@@ -29,7 +29,7 @@ baseHandler := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.L
 
 logger := slog.New(slow_query.NewSlogHandler(baseHandler, nil))
 // or
-// suppress := []string{c.SelectMany}
+// suppress := []int{d.SelectMany}
 // logger := slog.New(slow_query.NewSlogHandler(baseHandler, suppress))
 ```
 
@@ -40,14 +40,14 @@ logger := slog.New(slow_query.NewSlogHandler(baseHandler, nil))
 {
   "time": "2026-01-01:00:00.00000000Z",
   "level": "INFO",
-  "msg": "SELECT * FROM \"users\"",
-  "slow_query": "Select many(select * OR no limit)"
+  "msg": "SELECT id, name FROM \"users\" WHERE name LIKE '%a' LIMIT 10",
+  "slow_query": LIKE %..."
 }
 ```
 
 **text**
 ```txt
-time=2026-01-01T12:00:00.000Z level=INFO msg="SELECT * FROM \"users\"" slow_query="Select many(select * OR no limit)"
+time=2026-01-01T12:00:00.000Z level=INFO msg="SELECT id, name FROM \"users\" WHERE name LIKE '%a' LIMIT 10" slow_query="LIKE %..."
 ```
 
 No attribution of "slow_query" when no detection about slow query.

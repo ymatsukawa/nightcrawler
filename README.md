@@ -2,7 +2,7 @@
 
 ## Description
 
-Detect slow query from slog.
+Detect slow query doubted log from slog.
 
 ## Installation
 
@@ -41,7 +41,7 @@ logger := slog.New(nightcrawler.NewSlogHandler(baseHandler, nil))
   "time": "2026-01-01:00:00.00000000Z",
   "level": "INFO",
   "msg": "SELECT id, name FROM \"users\" WHERE name LIKE '%a' LIMIT 10",
-  "slow_query": LIKE %..."
+  "slow_query": "LIKE %..."
 }
 ```
 
@@ -50,7 +50,7 @@ logger := slog.New(nightcrawler.NewSlogHandler(baseHandler, nil))
 time=2026-01-01T12:00:00.000Z level=INFO msg="SELECT id, name FROM \"users\" WHERE name LIKE '%a' LIMIT 10" slow_query="LIKE %..."
 ```
 
-No attribution of "slow_query" when no detection about slow query.
+No attribution of "slow_query" when no detection about slow query or supressing the target.
 
 ## LICENSE
 MIT

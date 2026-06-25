@@ -29,4 +29,4 @@ require (
 	golang.org/x/time v0.12.0 // indirect
 )
 
-replace github.com/ymatsukawa/slow_query => ../ 
+replace github.com/ymatsukawa/slow_query => ../

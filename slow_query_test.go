@@ -6,13 +6,13 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	c "github.com/ymatsukawa/slow_query/category"
+	d "github.com/ymatsukawa/slow_query/detector"
 )
 
 func TestNewSlogHandler(t *testing.T) {
 	type Args struct {
 		SourceHandler slog.Handler
-		Suppress      []string
+		Suppress      []int
 	}
 
 	tests := []struct {
@@ -23,14 +23,14 @@ func TestNewSlogHandler(t *testing.T) {
 			Name: "Create new slog handler with suppress",
 			Args: Args{
 				SourceHandler: slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}),
-				Suppress:      []string{},
+				Suppress:      []int{},
 			},
 		},
 		{
 			Name: "Create new slog handler with suppress (with categories)",
 			Args: Args{
 				SourceHandler: slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}),
-				Suppress:      []string{c.SelectMany},
+				Suppress:      []int{d.SelectMany},
 			},
 		},
 	}

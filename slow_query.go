@@ -12,7 +12,7 @@ type slowQueryDetectHandler struct {
 	LogInfo       detector.ParseInfo
 }
 
-func NewSlogHandler(sourceHandler slog.Handler, suppress []string) *slowQueryDetectHandler {
+func NewSlogHandler(sourceHandler slog.Handler, suppress []int) *slowQueryDetectHandler {
 	return &slowQueryDetectHandler{
 		SourceHandler: sourceHandler,
 		LogInfo: detector.ParseInfo{
@@ -42,8 +42,8 @@ func (h *slowQueryDetectHandler) WithGroup(name string) slog.Handler {
 
 func (h *slowQueryDetectHandler) Handle(ctx context.Context, record slog.Record) error {
 	prev := record.Message
-	if category, ok := detector.CatchSlowQuery(record.Message, h.LogInfo); ok {
-		record.AddAttrs(slog.String("slow_query", category))
+	if class, ok := detector.CatchSlowQuery(record.Message, h.LogInfo); ok {
+		record.AddAttrs(slog.String("slow_query", class))
 	}
 
 	err := h.SourceHandler.Handle(ctx, record)

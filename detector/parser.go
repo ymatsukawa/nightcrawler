@@ -7,9 +7,11 @@ import (
 	mc "github.com/ymatsukawa/nightcrawler/detector/match_case"
 )
 
+type Suppressor int
+
 type ParseInfo struct {
 	PreviousLine string
-	Suppress     []int
+	Suppressors  []Suppressor
 }
 
 func CatchSlowQuery(log string, parseInfo ParseInfo) (string, bool) {
@@ -20,7 +22,7 @@ func CatchSlowQuery(log string, parseInfo ParseInfo) (string, bool) {
 	}
 
 	for _, c := range classes {
-		if slices.Contains(parseInfo.Suppress, c.GetId()) {
+		if slices.Contains(parseInfo.Suppressors, Suppressor(c.GetId())) {
 			continue
 		}
 		if c.IsMatch(l) {

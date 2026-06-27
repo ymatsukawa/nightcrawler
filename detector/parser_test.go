@@ -134,7 +134,7 @@ func TestCatchSlowQuery(t *testing.T) {
 func TestCatchSlowQueryBySuppressing(t *testing.T) {
 	type Test struct {
 		Name        string
-		Suppress    []int
+		Suppressors []Suppressor
 		Log         string
 		ExpectCatch bool
 	}
@@ -142,13 +142,13 @@ func TestCatchSlowQueryBySuppressing(t *testing.T) {
 	tests := []Test{
 		{
 			Name:        "Suppressed select and no limit",
-			Suppress:    []int{SelectMany, NoLimit},
+			Suppressors: []Suppressor{Suppressor(SelectMany), Suppressor(NoLimit)},
 			Log:         `select * from users limit 1`,
 			ExpectCatch: false,
 		},
 		{
 			Name:        "Not Suppressed select many",
-			Suppress:    []int{},
+			Suppressors: []Suppressor{},
 			Log:         `select * from users limit 10`,
 			ExpectCatch: true,
 		},
@@ -156,7 +156,7 @@ func TestCatchSlowQueryBySuppressing(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.Name, func(t *testing.T) {
-			_, ok := CatchSlowQuery(tt.Log, ParseInfo{Suppress: tt.Suppress})
+			_, ok := CatchSlowQuery(tt.Log, ParseInfo{Suppressors: tt.Suppressors})
 			assert.Equal(t, tt.ExpectCatch, ok)
 		})
 	}

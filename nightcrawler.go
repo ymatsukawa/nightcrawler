@@ -12,12 +12,12 @@ type slowQueryDetectHandler struct {
 	LogInfo       detector.ParseInfo
 }
 
-func NewSlogHandler(sourceHandler slog.Handler, suppress []int) *slowQueryDetectHandler {
+func NewSlogHandler(sourceHandler slog.Handler, suppressors []detector.Suppressor) *slowQueryDetectHandler {
 	return &slowQueryDetectHandler{
 		SourceHandler: sourceHandler,
 		LogInfo: detector.ParseInfo{
 			PreviousLine: "",
-			Suppress:     suppress,
+			Suppressors:  suppressors,
 		},
 	}
 }

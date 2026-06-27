@@ -7,7 +7,7 @@ Detect slow query doubted log from slog.
 ## Installation
 
 ```
-go get -u github.com/ymatsukawa/nightcrawler
+go get -u github.com/ymatsukawa/nightcrawler@latest
 ```
 
 ## Usage
@@ -29,7 +29,7 @@ baseHandler := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.L
 
 logger := slog.New(nightcrawler.NewSlogHandler(baseHandler, nil))
 // or
-// suppress := []int{d.SelectMany}
+// suppress := []d.Suppress{d.SelectMany}
 // logger := slog.New(nightcrawler.NewSlogHandler(baseHandler, suppress))
 ```
 
